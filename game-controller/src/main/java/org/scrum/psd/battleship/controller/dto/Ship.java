@@ -9,16 +9,17 @@ public class Ship {
     private int size;
     private List<Position> positions;
     private Color color;
+    private List<Position> hitPositions;
 
     public Ship() {
         this.positions = new ArrayList<>();
     }
 
     public Ship(String name, int size) {
-        this();
-
         this.name = name;
         this.size = size;
+        this.positions = new ArrayList<>();
+        this.hitPositions = new ArrayList<>();
     }
 
     public Ship(String name, int size, List<Position> positions) {
@@ -84,5 +85,9 @@ public class Ship {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public boolean isSunk() {
+        return hitPositions.containsAll(positions);
     }
 }

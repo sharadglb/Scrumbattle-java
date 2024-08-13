@@ -53,7 +53,7 @@ public class Main {
         System.out.println("   \\    \\_/");
         System.out.println("    \" \"\" \"\" \"\" \"");
 
-        do {
+        while (!isGameOver()) {
             System.out.println("");
             System.out.println("Player, it's your turn");
             System.out.println("Enter coordinates for your shot :");
@@ -75,6 +75,10 @@ public class Main {
             System.out.println(isHit ? "Yeah ! Nice hit !" : "Miss");
             telemetry.trackEvent("Player_ShootPosition", "Position", position.toString(), "IsHit", Boolean.valueOf(isHit).toString());
 
+            if (isGameOver()) {
+                break;
+            }
+
             position = getRandomPosition();
             isHit = GameController.checkIsHit(myFleet, position);
             System.out.println("");
@@ -93,7 +97,9 @@ public class Main {
                 System.out.println("                   \\  \\   /  /");
 
             }
-        } while (true);
+        }
+
+        displayGameOverMessage();
     }
 
     private static void beep() {
@@ -112,7 +118,7 @@ public class Main {
         Random random = new Random();
         Letter letter = Letter.values()[random.nextInt(lines)];
         int number = random.nextInt(rows);
-        Position position = new Position(letter, number);
+        Position position = new Position(letter, number + 1); // Added +1 to ensure position is within 1-8
         return position;
     }
 
@@ -166,4 +172,28 @@ public class Main {
         enemyFleet.get(4).getPositions().add(new Position(Letter.C, 5));
         enemyFleet.get(4).getPositions().add(new Position(Letter.C, 6));
     }
+
+    private static boolean isGameOver() {
+        return allShipsSunk(myFleet) || allShipsSunk(enemyFleet);
+    }
+
+    private static boolean allShipsSunk(List<Ship> fleet) {
+        for (Ship ship : fleet) {
+            if (!ship.isSunk()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+private static void displayGameOverMessage() {
+    if (allShipsSunk(enemyFleet)) {
+        telemetry.trackEvent("Game_Ended", "Result", "Win");
+        System.out.println("Congratulations! You are the winner!");
+    } else if (allShipsSunk(myFleet)) {
+        telemetry.trackEvent("Game_Ended", "Result", "Loss");
+        System.out.println("You lost! Better luck next time.");
+    }
+}
+
 }
