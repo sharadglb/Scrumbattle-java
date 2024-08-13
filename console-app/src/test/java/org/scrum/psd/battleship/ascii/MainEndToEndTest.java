@@ -19,7 +19,8 @@ public class MainEndToEndTest {
     @Test
     public void testPlayGameShotHits() {
         try {
-            gameInput.provideLines("a1", "a2", "a3", "a4", "a5", "b1", "b2", "b3", "b4", "c1", "c2", "c3", "d1", "d2", "d3", "e1", "e2", "b4");
+            //gameInput.provideLines("a1", "a2", "a3", "a4", "a5", "b1", "b2", "b3", "b4", "c1", "c2", "c3", "d1", "d2", "d3", "e1", "e2", "b4");
+            gameInput.provideLines("B4", "B5", "B6", "B7", "B8", "E6", "E7", "E8", "E9", "A3", "B2", "C3", "F8", "G8", "H8", "C5", "C6","B4");
 
             Main.main(new String[]{});
         } catch(NoSuchElementException e) {
